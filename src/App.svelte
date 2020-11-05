@@ -52,7 +52,6 @@
         });
         map.fitBounds(bounds, { padding: { bottom: 150, top: 50, left: 20, right: 20 } });
     });
-
 </script>
 
 <ul>
