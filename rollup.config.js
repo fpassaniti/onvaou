@@ -3,29 +3,13 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import preprocess from 'svelte-preprocess';
+import postcss from 'rollup-plugin-postcss';
+
+import nodeResolve from '@rollup/plugin-node-resolve';
+import nodePolyfills from 'rollup-plugin-node-polyfills';
 
 const production = !process.env.ROLLUP_WATCH;
-
-function serve() {
-	let server;
-	
-	function toExit() {
-		if (server) server.kill(0);
-	}
-
-	return {
-		writeBundle() {
-			if (server) return;
-			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
-				stdio: ['ignore', 'inherit', 'inherit'],
-				shell: true
-			});
-
-			process.on('SIGTERM', toExit);
-			process.on('exit', toExit);
-		}
-	};
-}
 
 export default {
 	input: 'src/main.js',
@@ -36,6 +20,8 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		nodeResolve(),
+		nodePolyfills(),
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,
@@ -43,9 +29,13 @@ export default {
 			// a separate file - better for performance
 			css: css => {
 				css.write('bundle.css');
-			}
+			},
+			preprocess: preprocess()
 		}),
-
+		postcss({
+			extract: true,
+			modules: true
+		}),
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
 		// some cases you'll need additional configuration -
@@ -73,3 +63,20 @@ export default {
 		clearScreen: false
 	}
 };
+
+function serve() {
+	let started = false;
+
+	return {
+		writeBundle() {
+			if (!started) {
+				started = true;
+
+				require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+					stdio: ['ignore', 'inherit', 'inherit'],
+					shell: true
+				});
+			}
+		}
+	};
+}
