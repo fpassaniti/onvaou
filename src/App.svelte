@@ -7,6 +7,7 @@
     import ListItem from "./components/ListItem.svelte";
     import GeolocateControl from "./components/GeolocateControl.svelte";
     import Geocoder from "./components/Geocoder.svelte";
+    import MapStyleSelect from "./components/MapStyleSelect.svelte";
 
     onMount(async () => {
         await records.update();
@@ -17,6 +18,7 @@
     <Map>
         <GeolocateControl></GeolocateControl>
         <Geocoder></Geocoder>
+        <MapStyleSelect></MapStyleSelect>
         {#each $records as record}
             <Marker {record} />
         {/each}

@@ -31,7 +31,7 @@
         console.log('onmount map');
         await mapStore.init({
             container,
-            style: 'mapbox://styles/mapbox/outdoors-v11',
+            style: 'mapbox://styles/mapbox/streets-v11',
             center: config.mapbox.init.center,
             zoom: config.mapbox.init.zoom
         });
