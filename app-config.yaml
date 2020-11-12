@@ -9,4 +9,8 @@ config:
 
     geocoder:
       # Narrow search results to the defined boundingbox to avoid to many noises
-      searchbbox: [50.784093,1.771787,51.206744,2.925351]
+      searchbbox: [2.108065,50.896051,2.608629,51.132778]
+
+  data:
+    datasetid: ""
+    domainid: ""

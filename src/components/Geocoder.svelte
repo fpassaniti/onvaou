@@ -8,16 +8,17 @@
 <script>
     import {onMount, setContext} from 'svelte';
     import {mapStore} from '../utils/mapStore';
+    import {config} from '../../app-config.yaml'
 
     import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
     let container;
 
-    console.log('try geocoder...');
     var geocoder = new MapboxGeocoder({
         accessToken: $mapStore.mapboxgl.accessToken, // Set the access token
         mapboxgl: $mapStore.mapboxgl, // Set the mapbox-gl instance
         marker: true, // Use the geocoder's default marker style
+        bbox: config.mapbox.geocoder.searchbbox
     });
     $mapStore.map.addControl(geocoder, 'top-right');
 </script>

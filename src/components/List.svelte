@@ -9,6 +9,7 @@
         width: 360px;
         overflow: auto;
         background-color: white;
+        //background-color: $body-background-color;
     }
 
     ul {
@@ -17,8 +18,6 @@
         padding: 0;
     }
 </style>
-
-
 
 <div>
     <ul id="markers">

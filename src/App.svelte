@@ -1,5 +1,4 @@
 <script>
-    import "./style/main.scss";
     import {onMount} from 'svelte';
     import {records} from './utils/data.js'
     import Map from "./components/Map.svelte";
@@ -31,8 +30,6 @@
 {/if}
 
 
-<style global>
-    body {
-        font-size: 14px;
-    }
+<style global lang="scss">
+    @import "style/main.scss";
 </style>

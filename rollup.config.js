@@ -11,6 +11,21 @@ import yaml from 'rollup-plugin-yaml';
 
 const production = !process.env.ROLLUP_WATCH;
 
+const preprocessOptions = {
+    transformers: {
+        scss: {
+            includePaths: [
+                'node_modules',
+                'src'
+            ]
+        },
+        postcss: {
+            plugins: [
+                require('autoprefixer'),
+            ]
+        }
+    },
+}
 
 export default {
     input: 'src/main.js',
@@ -31,7 +46,7 @@ export default {
             css: css => {
                 css.write('bundle.css');
             },
-            preprocess: preprocess()
+            preprocess: preprocess(preprocessOptions)
         }),
         postcss(),
         resolve({

@@ -1,0 +1,67 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('icomoon.eot?5liqtn');
+  src:  url('icomoon.eot?5liqtn#iefix') format('embedded-opentype'),
+    url('icomoon.ttf?5liqtn') format('truetype'),
+    url('icomoon.woff?5liqtn') format('woff'),
+    url('icomoon.svg?5liqtn#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-alimentation_generale:before {
+  content: "\e900";
+}
+.icon-boucherie_charcuterie:before {
+  content: "\e901";
+}
+.icon-boulangerie_patisserie:before {
+  content: "\e902";
+}
+.icon-chocolatier:before {
+  content: "\e903";
+}
+.icon-fromagerie:before {
+  content: "\e904";
+}
+.icon-glacier:before {
+  content: "\e905";
+}
+.icon-poissonnerie:before {
+  content: "\e906";
+}
+.icon-primeur:before {
+  content: "\e907";
+}
+.icon-restaurant:before {
+  content: "\e908";
+}
+.icon-restauration_collective:before {
+  content: "\e909";
+}
+.icon-supermarche:before {
+  content: "\e90a";
+}
+.icon-traiteur:before {
+  content: "\e90b";
+}

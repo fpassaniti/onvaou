@@ -13,3 +13,10 @@
 @import "../../node_modules/bulma/sass/components/_all";
 @import "../../node_modules/bulma/sass/grid/_all";
 @import "../../node_modules/bulma/sass/layout/_all";
+
+
+body {
+  background-color: $body-background-color;
+  font-size: 14px;
+}
+
