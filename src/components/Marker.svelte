@@ -1,32 +1,48 @@
 <script>
-    import { getContext, onMount } from 'svelte'
-
-    const { mapbox, getMap, bounds } = getContext('mapbox');
-    const map = getMap();
+    import { onMount } from 'svelte'
+    import { mapStore } from '../utils/mapStore';
 
     export let record;
 
     let { lat, lon } = record.geolocalisation;
-    const marker = new mapbox.Marker()
-            .setLngLat([lon, lat])
-            .setPopup(new mapbox.Popup().setHTML(`
-                <h1>${record.nom_de_la_societe}</h1>
-                <ul>
-                    <li>
-                        Type: ${record.type_de_commerce}
-                    </li>
-                    <li>
-                        Adresse: ${record.adresse_du_point_de_vente}
-                    </li>
-                </ul>
-                `));
-    bounds.extend([lon, lat]);
-    map.fitBounds(bounds, { padding: { bottom: 150, top: 50, left: 300, right: 20 } })
+    var el = document.createElement('div');
+    el.className = 'marker';
+    el.dataset['recordid'] = record.recordid;
+    el.addEventListener('click', (e) => {
+        var li = document.querySelector('.listitem[data-recordid="' + e.target.dataset['recordid'] + '"]');
+        if (li) {
+            li.scrollIntoView({ behavior: 'smooth' });
+            li.classList.add('highlighted');
+            setInterval(() => {
+                li.classList.remove('highlighted');
+            }, 1000);
+        }
+    });
+
+    const marker = new $mapStore.mapboxgl.Marker(el)
+            .setLngLat([lon, lat]);
+    $mapStore.bounds.extend([lon, lat]);
+    $mapStore.map.fitBounds($mapStore.bounds, { padding: { bottom: 100, top: 100, left: 350, right: 80 } });
 
     onMount(() => {
-        /*console.log(map);
-        console.log(marker);*/
-        marker.addTo(map);
-        //return () => marker.remove();
+        marker.addTo($mapStore.map);
+        return () => marker.remove();
     });
 </script>
+
+
+<style lang="scss" global>
+    .marker {
+        width: 13px;
+        height: 13px;
+        border-radius: 1000px;
+        background: black;
+        border: 2px solid lightgreen;
+        cursor: pointer;
+
+        &.mousehover {
+            border-color: red;
+            z-index: 1000;
+        }
+    }
+</style>

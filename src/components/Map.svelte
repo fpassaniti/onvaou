@@ -4,8 +4,6 @@
 </svelte:head>
 
 <style lang="scss" global>
-    // @import '~mapbox-gl/dist/mapbox-gl.css';
-
     #this-is-not-a-map {
         position: fixed;
         top: 0;
@@ -19,49 +17,27 @@
 
 
 <script>
-    import {onMount, setContext} from 'svelte';
-    import mapbox from 'mapbox-gl/dist/mapbox-gl.js';
-    //import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+    import { onMount } from 'svelte';
 
-    mapbox.accessToken = 'pk.eyJ1IjoiZnBhc3Nhbml0aSIsImEiOiIxNTg3MGRlZWQyNjVkZjExMGVlNWVjNDFjOWQyNzNiMiJ9.pYKDlO4v-SNiDz08G9ZZoQ';
+    import { mapStore } from '../utils/mapStore';
 
-    let map;
+    import { config } from '../../app-config.yaml'
+
     let container;
-    let bounds = new mapbox.LngLatBounds();
-    let geocoder;
 
-    setContext('mapbox', {
-        mapbox: mapbox,
-        getMap: () => map,
-        bounds: bounds
-    });
-
-    onMount(() => {
-        map = new mapbox.Map({
+    onMount(async () => {
+        console.log('onmount map');
+        await mapStore.init({
             container,
             style: 'mapbox://styles/mapbox/outdoors-v11',
-            center: [45.406164, 5.765444]
+            center: config.mapbox.init.center,
+            zoom: config.mapbox.init.zoom
         });
-        map.addControl(new mapbox.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        }));
-
-        /*geocoder = new MapboxGeocoder({
-            accessToken: mapbox.accessToken, // Set the access token
-            mapbox: mapbox, // Set the mapbox-gl instance
-            marker: true, // Use the geocoder's default marker style
-            bbox: [-77.210763, 38.803367, -76.853675, 39.052643] // Set the bounding box coordinates
-        });
-
-        map.addControl(geocoder, 'top-right');*/
     });
 </script>
 
 <div id="this-is-not-a-map" bind:this={container}>
-    {#if map}
+    {#if $mapStore.map}
         <slot></slot>
     {/if}
 </div>

@@ -1,0 +1,12 @@
+config:
+  mapbox:
+    apikey: "pk.eyJ1IjoiZnBhc3Nhbml0aSIsImEiOiIxNTg3MGRlZWQyNjVkZjExMGVlNWVjNDFjOWQyNzNiMiJ9.pYKDlO4v-SNiDz08G9ZZoQ"
+
+    # default map location (center of the map, and zoom level)
+    init:
+      zoom: 10
+      center: [2.374126, 51.023950]
+
+    geocoder:
+      # Narrow search results to the defined boundingbox to avoid to many noises
+      searchbbox: [50.784093,1.771787,51.206744,2.925351]
