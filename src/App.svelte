@@ -10,25 +10,25 @@
     import MapStyleSelect from "./components/MapStyleSelect.svelte";
 
     onMount(async () => {
-        await records.update();
+        //await records.update();
     });
 </script>
 
 {#if $records !== []}
     <Map>
-        <GeolocateControl></GeolocateControl>
+        <!--<GeolocateControl></GeolocateControl>
         <Geocoder></Geocoder>
-        <MapStyleSelect></MapStyleSelect>
-        {#each $records as record}
+        <MapStyleSelect></MapStyleSelect>-->
+        <!--{#each $records as record}
             <Marker {record} />
-        {/each}
+        {/each}-->
     </Map>
 
-    <List>
+    <!--<List>
         {#each $records as record}
             <ListItem {record} />
         {/each}
-    </List>
+    </List>-->
 {/if}
 
 
