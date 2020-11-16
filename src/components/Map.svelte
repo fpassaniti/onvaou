@@ -65,6 +65,7 @@
                             'icon-image': symbol,
                             'icon-size': 0.3,
                             'icon-allow-overlap': true,
+                            'text-allow-overlap': true,
                             "text-field": "{name}",
                             "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
                             "text-size": 13,
@@ -81,7 +82,7 @@
             });
         });
 
-        map.on('mousemove', function(e) {
+        /*map.on('mousemove', function(e) {
             var items = map.queryRenderedFeatures(e.point, {
                 layers: layers
             });
@@ -90,7 +91,44 @@
             } else {
                 document.getElementById('mouse').innerHTML = '<p>Hover over an item!</p>';
             }
+        });*/
+
+        map.on('click', function (e) {
+            var items = map.queryRenderedFeatures(e.point, {
+                layers: layers
+            });
+            if (items.length > 0) {
+                console.log(items[0]);
+                var coordinates = e.lngLat;
+                var description = items[0].properties.type;
+
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+
+                new mapbox.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(description)
+                        .addTo(map);
+            }
         });
+
+// Change the cursor to a pointer when the mouse is over the places layer.
+        map.on('mousemove', function (e) {
+            var items = map.queryRenderedFeatures(e.point, {
+                layers: layers
+            });
+            if (items.length > 0) {
+                map.getCanvas().style.cursor = 'pointer';
+            } else {
+                map.getCanvas().style.cursor = 'default';
+            }
+        });
+/*
+// Change it back to a pointer when it leaves.
+        map.on('mouseleave', function () {
+            map.getCanvas().style.cursor = '';
+        });*/
 
         bounds = new mapbox.LngLatBounds();
     });
