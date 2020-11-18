@@ -6,19 +6,22 @@
 
 
 <script>
-    import {onMount, setContext} from 'svelte';
-    import {mapStore} from '../utils/mapStore';
+    import {getContext} from 'svelte';
     import {config} from '../../app-config.yaml'
 
+    import mapbox from 'mapbox-gl';
     import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
     let container;
 
+    const { getMap } = getContext('map');
+    const map = getMap();
+
     var geocoder = new MapboxGeocoder({
-        accessToken: $mapStore.mapboxgl.accessToken, // Set the access token
-        mapboxgl: $mapStore.mapboxgl, // Set the mapbox-gl instance
+        accessToken: config.mapbox.apikey, // Set the access token
+        mapboxgl: mapbox, // Set the mapbox-gl instance
         marker: true, // Use the geocoder's default marker style
         bbox: config.mapbox.geocoder.searchbbox
     });
-    $mapStore.map.addControl(geocoder, 'top-right');
+    map.addControl(geocoder, 'top-right');
 </script>

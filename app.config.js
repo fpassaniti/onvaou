@@ -14,6 +14,16 @@ export default {
         }
     },
     pictos: {
+        "default": // mandatory, keep a default icon
+            {
+                "name": "default",
+                "url":
+                    "/static/img/pin.svg",
+                "fontclass":
+                    "",
+                "color":
+                    "#f5f5f5"
+            },
         "Traiteur - restauration à emporter":
             {
                 "name": "traiteur",
