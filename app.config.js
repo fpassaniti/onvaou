@@ -5,6 +5,7 @@ export default {
             zoom: 8,
             center: [2.374126, 51.023950]
         },
+        style: "mapbox://styles/mapbox/light-v10",
         geocoder: { /* Narrow search results to the defined boundingbox to avoid to many noises */
             searchbbox: [2.108065, 50.896051, 2.608629, 51.132778]
         },

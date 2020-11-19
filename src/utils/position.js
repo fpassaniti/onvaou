@@ -2,6 +2,21 @@ import {writable} from 'svelte/store';
 import config from '../../app.config';
 import mapbox from 'mapbox-gl';
 
+
+function createUserGeolocation() {
+    const {subscribe, set} = writable(undefined);
+
+    return {
+        subscribe,
+        geolocate(coord) {
+            set(coord);
+        },
+        end() {
+            set(undefined);
+        }
+    };
+}
+
 function createMapPosition() {
     const {subscribe, set} = writable(undefined);
 
@@ -54,6 +69,7 @@ function createBounds() {
     };
 }
 
+export const userGeolocation = createUserGeolocation();
 export const mapPosition = createMapPosition();
 export const listPosition = createListPosition();
 export const bounds = createBounds();

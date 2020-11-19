@@ -15,14 +15,12 @@
     import {mapPosition, listPosition, bounds} from '../utils/position'
 
     import config from '../../app.config'
-    import {createDonutChart, createClusterProperties} from "../utils/helpers";
+    import {createDonutChart, createClusterProperties} from "../utils/mapHelpers";
 
     mapbox.accessToken = config.mapbox.apikey;
 
     let container;
     let map;
-
-    let value;
 
     // objects for caching and keeping track of HTML marker objects (for performance)
     var markers = {};
@@ -33,7 +31,7 @@
     });
 
     $: map && map.getSource('data') && map.getSource('data').setData($geojson) && updateMarkers() && console.log('REACTIVE map setData (source updated) !');
-    $: map && $bounds.getNorthEast() && map.fitBounds($bounds, {
+    $: map /*&& $bounds.getNorthEast()*/ && map.fitBounds($bounds, {
         padding: {
             bottom: 100,
             top: 100,
@@ -50,12 +48,12 @@
     var layers = [];
 
     onMount(async () => {
-        await geojson.updateData();
+        await geojson.updateWhereQuery();
         bounds.init_or_reset($geojson);
 
         map = new mapbox.Map({
             container,
-            style: 'mapbox://styles/mapbox/light-v10',
+            style: config.mapbox.style,
             center: config.mapbox.init.center,
             zoom: config.mapbox.init.zoom
         });
@@ -81,34 +79,6 @@
                 map.on('moveend', updateMarkers);
                 updateMarkers();
             });
-
-            /* Clusters */
-            /*map.addLayer({
-                id: 'clusters',
-                type: 'circle',
-                source: 'data',
-                filter: ['has', 'point_count'],
-                paint: {
-                    'circle-color': [
-                        'step',
-                        ['get', 'point_count'],
-                        '#51bbd6',
-                        100,
-                        '#f1f075',
-                        750,
-                        '#f28cb1'
-                    ],
-                    'circle-radius': [
-                        'step',
-                        ['get', 'point_count'],
-                        20,
-                        100,
-                        30,
-                        750,
-                        40
-                    ]
-                }
-            });*/
 
             /* Symbols */
             var symbols = $geojson.features.reduce((acc, feature) => {
@@ -152,6 +122,8 @@
 
         map.on('click', function (e) {
             console.log('click in the map !!');
+            console.log(map.queryRenderedFeatures(e.point));
+
             var items = map.queryRenderedFeatures(e.point, {
                 layers: layers
             });
@@ -163,7 +135,7 @@
                 var el = document.createElement('div');
                 items.forEach((item) => {
                     var div = document.createElement('div');
-                    div.classList.add('is-flex','is-align-items-center','poi');
+                    div.classList.add('is-flex', 'is-align-items-center', 'poi');
 
                     var img = document.createElement('img');
                     img.src = '/static/img/' + config.pictos[item.properties.type_de_commerce].name + '.png';
@@ -172,6 +144,11 @@
                     var label = document.createElement('p');
                     label.innerText = item.properties.name;
                     div.appendChild(label);
+
+                    div.addEventListener('click', (e) => {
+                        var event_local_feature_id = item.properties.feature_id;
+                        listPosition.scrollTo(event_local_feature_id);
+                    });
 
                     el.appendChild(div);
                 });
@@ -182,34 +159,11 @@
 
                 new mapbox.Popup()
                         .setLngLat(items[0].geometry.coordinates)
-                        .setHTML(el.outerHTML)
+                        .setDOMContent(el)
                         .addTo(map);
             }
         });
 
-        /*map.on('click', 'clusters', function (e) {
-            var features = map.queryRenderedFeatures(e.point, {
-                layers: ['clusters']
-            });
-            var clusterId = features[0].properties.cluster_id;
-            var pointCount = features[0].properties.point_count;
-
-            map.getSource('data').getClusterLeaves(clusterId, pointCount, 0, function(error, features) {
-                console.log('Cluster leaves:', error, features);
-            })
-            map.getSource('data').getClusterExpansionZoom(
-                    clusterId,
-                    function (err, zoom) {
-                        if (err) return;
-
-                        map.easeTo({
-                            center: features[0].geometry.coordinates,
-                            zoom: zoom + 2
-                        });
-                    }
-            );
-        });
-*/
         map.on('mousemove', function (e) {
             var items = map.queryRenderedFeatures(e.point, {
                 layers: layers
@@ -221,11 +175,6 @@
             }
         });
     });
-
-    async function test() {
-        console.log('value : ' + value);
-        await geojson.updateData(value);
-    }
 
     function updateMarkers() {
         var newMarkers = {};
@@ -274,8 +223,6 @@
 
 </script>
 
-<input id="test-input" type="text" on:change={test} bind:value={value}/>
-
 <div id="this-is-not-a-map" bind:this={container}>
     {#if map}
         <slot></slot>
@@ -295,33 +242,48 @@
         width: 100vw;
     }
 
-    #test-input {
-        position: absolute;
-        top: 30px;
-        left: 420px;
-        z-index: 1;
+    .mapboxgl-canvas {
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .mapboxgl-ctrl-top-right {
+        display: flex;
+        align-items: center;
     }
 
     .mapboxgl-marker > * { // keep click event no marker and not the svg inside
         pointer-events: none;
     }
+
     .mapboxgl-popup {
         .poi {
+            * {
+                pointer-events: none; // let pointer click events on .poi and not the rest
+            }
+
             img {
                 height: 26px;
                 width: 26px;
             }
 
-            margin-top: $spacing-100;
-            &:first-child {
-                margin-top: 0;
-            }
+            padding: $spacing-100/2 $spacing-100;
 
             p {
                 margin-left: $spacing-100 / 2;
                 font-weight: 500;
                 font-size: $size-4;
             }
+
+            &:hover {
+                background-color: $light-300;
+                cursor: pointer;
+            }
         }
+    }
+
+    .mapboxgl-popup-content {
+        padding: 0 !important;
     }
 </style>

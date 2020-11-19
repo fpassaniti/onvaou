@@ -5,12 +5,8 @@
     import ListItem from "./components/ListItem.svelte";
     import GeolocateControl from "./components/GeolocateControl.svelte";
     import Geocoder from "./components/Geocoder.svelte";
-    import MapStyleSelect from "./components/MapStyleSelect.svelte";
     import {geojson} from './utils/store2'
-
-    onMount(async () => {
-        //await $geojson.updateData();
-    });
+    import {sortedGeojson} from './utils/sortedStore'
 </script>
 
 
@@ -18,9 +14,9 @@
     <GeolocateControl></GeolocateControl>
     <Geocoder></Geocoder>
     <!--<MapStyleSelect></MapStyleSelect>-->
-    {#if $geojson.features !== []}
+    {#if $sortedGeojson.features !== []}
         <List>
-            {#each $geojson.features as feature}
+            {#each $sortedGeojson.features as feature}
                 <ListItem {feature}/>
             {/each}
         </List>

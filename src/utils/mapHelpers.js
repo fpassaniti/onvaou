@@ -8,12 +8,8 @@ const colors = Object.keys(config.pictos).reduce((acc, key) => {
     return [...acc, config.pictos[key].color];
 }, []);
 
-function scrollToTop() {
-    document.querySelector('#markers li').scrollIntoView();
-}
-
 // code for creating an SVG donut chart from feature properties
-function createDonutChart(props) {
+export function createDonutChart(props) {
     var offsets = [];
     var counts = types.reduce((acc,type) => {
         return [...acc, props[type]];
@@ -116,7 +112,7 @@ function donutSegment(start, end, r, r0, color) {
     ].join(' ');
 }
 
-function createClusterProperties() {
+export function createClusterProperties() {
     var cluster_properties = Object.keys(config.pictos).reduce((acc, key) => {
         var obj = config.pictos[key];
         acc[obj.name] = ['+', ['case', ['==', ['get', 'type'], obj.name], 1, 0]];
@@ -124,28 +120,3 @@ function createClusterProperties() {
     }, {});
     return cluster_properties;
 }
-
-/* from https://gist.github.com/codeguy/6684588 */
-function slugify(str, separator = "-") {
-    return str
-        .toString()
-        .normalize('NFD')                   // split an accented letter in the base letter and the acent
-        .replace(/[\u0300-\u036f]/g, '')   // remove all previously split accents
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9 ]/g, '')   // remove all chars not letters, numbers and spaces (to be replaced)
-        .replace(/\s+/g, separator);
-}
-
-function createFeatureUniqueIDFromConfigAndProperties(props) {
-    var acc = [];
-    config.store.unique_ids.forEach((id) => {
-        var val = props[id];
-        if (val) {
-            acc.push(val);
-        }
-    });
-    return slugify(acc.join('-'));
-}
-
-export {scrollToTop, createDonutChart, createClusterProperties, createFeatureUniqueIDFromConfigAndProperties}

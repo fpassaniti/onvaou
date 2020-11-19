@@ -1,16 +1,20 @@
 <script>
-    import {mapStore} from '../utils/mapStore';
+    import { getContext } from 'svelte';
 
     let styles = [
         {id: 'light-v10', text: `Light`},
         {id: 'dark-v10', text: `Dark`},
-        {id: 'streets-v11', text: `Streets`}
+        {id: 'streets-v11', text: `Streets`},
+        {id: 'satellite-v8', text: `Sat`}
     ];
 
     let selected;
 
+    const { getMap } = getContext('map');
+    const map = getMap();
+
     function switchStyleOnMap() {
-        $mapStore.map.setStyle('mapbox://styles/mapbox/' + selected);
+        map.setStyle('mapbox://styles/mapbox/' + selected);
     }
 
     // TODO set default style as config
@@ -20,7 +24,7 @@
         on:change="{() => switchStyleOnMap()}"
         on:blur="{() => switchStyleOnMap()}">
     {#each styles as style}
-        <option value={style.id} selected="{style.id == 'streets-v11'}">
+        <option value={style.id} selected="{style.id == 'light-v10'}">
             {style.text}
         </option>
     {/each}
