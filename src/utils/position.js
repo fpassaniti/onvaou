@@ -2,20 +2,31 @@ import {writable} from 'svelte/store';
 import config from '../../app.config';
 import mapbox from 'mapbox-gl';
 
-function createPosition() {
-    const {subscribe, set, update} = writable([]);
+function createMapPosition() {
+    const {subscribe, set} = writable(undefined);
 
-    const initMapPositionFromConfig = () => {
+    /*const initMapPositionFromConfig = () => {
         return config.mapbox.init.center;
-    };
+    };*/
 
     return {
         subscribe,
-        init() {
-            set(initMapPositionFromConfig())
-        },
         flyTo(coord) {
             set(coord);
+        }
+    };
+}
+
+function createListPosition() {
+    const {subscribe, set} = writable(undefined);
+
+    return {
+        subscribe,
+        scrollTo(feature_id) {
+            set(feature_id);
+        },
+        reset() {
+            set(undefined);
         }
     };
 }
@@ -29,14 +40,20 @@ function createBounds() {
 
     return {
         subscribe,
-        init_or_reset() {
-            set(initMapBounds())
+        init_or_reset(geojson) {
+            var bounds = initMapBounds();
+            geojson.features.forEach((feature) => {
+                bounds.extend(feature.geometry.coordinates);
+            });
+            console.log('map bounds updated');
+            set(bounds)
         },
-        extend(coord) {
+        /*extend(coord) {
             update((bounds) => bounds.extend(coord))
-        }
+        }*/
     };
 }
 
-export const position = createPosition();
+export const mapPosition = createMapPosition();
+export const listPosition = createListPosition();
 export const bounds = createBounds();

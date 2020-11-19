@@ -2,11 +2,12 @@ import {getBaseUrl, getRecordsUrl, addSelectQuery, addRowsQuery} from './odsql.j
 import {writable} from 'svelte/store';
 import {addWhereQuery, getGeoJsonExportUrl} from "./odsql";
 import config from '../../app.config'
+import {createFeatureUniqueIDFromConfigAndProperties} from '../utils/helpers'
 
 function createStore() {
     const {subscribe, set, update} = writable({});
 
-    const processAPIQuery = async (url) => {
+    /*const processAPIQuery = async (url) => {
         const promiseFromServ = await fetch(url);
         const data = await promiseFromServ.json();
         const records = data.records.reduce((acc, record) => {
@@ -20,7 +21,7 @@ function createStore() {
         } else {
             return records;
         }
-    };
+    };*/
 
     /*const fetchData = async (whereQuery = '') => {
         var url = getBaseUrl('data')('commerces-alimentaires-locaux-covid-19@cudunkerque');
@@ -80,6 +81,7 @@ function createStore() {
             }
             feature.properties.type = type;
             feature.properties.name = feature.properties.nom_de_la_societe;
+            feature.properties.feature_id = createFeatureUniqueIDFromConfigAndProperties(feature.properties);
         });
         return geojson;
     };

@@ -12,7 +12,7 @@
     import mapbox from 'mapbox-gl';
 
     import {geojson} from '../utils/store2'
-    import {position, bounds} from '../utils/position'
+    import {mapPosition, listPosition, bounds} from '../utils/position'
 
     import config from '../../app.config'
     import {createDonutChart, createClusterProperties} from "../utils/helpers";
@@ -41,8 +41,8 @@
             right: 80
         }
     }) && console.log('REACTIVE map fitBounds !');
-    $: map && map.flyTo({
-        center: $position,
+    $: map && $mapPosition && map.flyTo({
+        center: $mapPosition,
         zoom: 18,
         padding: {left: 390}
     }) && updateMarkers() && console.log('REACTIVE map flyTo'); // TODO : global variable for left nav
@@ -51,8 +51,7 @@
 
     onMount(async () => {
         await geojson.updateData();
-        bounds.init_or_reset();
-        position.init();
+        bounds.init_or_reset($geojson);
 
         map = new mapbox.Map({
             container,
@@ -69,13 +68,14 @@
                 cluster: true,
                 //clusterId: 'clusters',
                 clusterMaxZoom: 22, // Max zoom to cluster points on
-                clusterRadius: 30, // Radius of each cluster when clustering points (defaults to 50)
+                clusterRadius: 25, // Radius of each cluster when clustering points (defaults to 50)
                 clusterProperties: createClusterProperties()
             });
 
             // after the GeoJSON data is loaded, update markers on the screen and do so on every map move/moveend
             map.on('data', function (e) {
                 if (e.sourceId !== 'data' || !e.isSourceLoaded) return;
+                console.log("reload data !");
 
                 map.on('move', updateMarkers);
                 map.on('moveend', updateMarkers);
@@ -155,18 +155,34 @@
             var items = map.queryRenderedFeatures(e.point, {
                 layers: layers
             });
-            console.log(items);
-            if (items.length > 0) {
+            if (items.length == 1) {
+                listPosition.scrollTo(items[0].properties.feature_id);
+            }
+            if (items.length > 1) {
                 var coordinates = e.lngLat;
-                var description = items[0].properties.type;
+                var el = document.createElement('div');
+                items.forEach((item) => {
+                    var div = document.createElement('div');
+                    div.classList.add('is-flex','is-align-items-center','poi');
+
+                    var img = document.createElement('img');
+                    img.src = '/static/img/' + config.pictos[item.properties.type_de_commerce].name + '.png';
+                    div.appendChild(img);
+
+                    var label = document.createElement('p');
+                    label.innerText = item.properties.name;
+                    div.appendChild(label);
+
+                    el.appendChild(div);
+                });
 
                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
 
                 new mapbox.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(description)
+                        .setLngLat(items[0].geometry.coordinates)
+                        .setHTML(el.outerHTML)
                         .addTo(map);
             }
         });
@@ -207,7 +223,6 @@
     });
 
     async function test() {
-        console.log('click');
         console.log('value : ' + value);
         await geojson.updateData(value);
     }
@@ -259,9 +274,7 @@
 
 </script>
 
-<button on:click={test}>Test</button>
-<input type="text" on:change={test} bind:value={value}/>
-<div id="mouse"></div>
+<input id="test-input" type="text" on:change={test} bind:value={value}/>
 
 <div id="this-is-not-a-map" bind:this={container}>
     {#if map}
@@ -270,17 +283,45 @@
 </div>
 
 <style lang="scss" global>
+    @import "../style/bulma-custom";
+
     #this-is-not-a-map {
         position: fixed;
-        /*top: 0;*/
+        top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        height: 90vh;
+        height: 100vh;
         width: 100vw;
+    }
+
+    #test-input {
+        position: absolute;
+        top: 30px;
+        left: 420px;
+        z-index: 1;
     }
 
     .mapboxgl-marker > * { // keep click event no marker and not the svg inside
         pointer-events: none;
+    }
+    .mapboxgl-popup {
+        .poi {
+            img {
+                height: 26px;
+                width: 26px;
+            }
+
+            margin-top: $spacing-100;
+            &:first-child {
+                margin-top: 0;
+            }
+
+            p {
+                margin-left: $spacing-100 / 2;
+                font-weight: 500;
+                font-size: $size-4;
+            }
+        }
     }
 </style>

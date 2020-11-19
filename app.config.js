@@ -2,7 +2,7 @@ export default {
     mapbox: {
         apikey: "pk.eyJ1IjoiZnBhc3Nhbml0aSIsImEiOiIxNTg3MGRlZWQyNjVkZjExMGVlNWVjNDFjOWQyNzNiMiJ9.pYKDlO4v-SNiDz08G9ZZoQ",
         init: { /* default map location (center of the map, and zoom level) */
-            zoom: 10,
+            zoom: 8,
             center: [2.374126, 51.023950]
         },
         geocoder: { /* Narrow search results to the defined boundingbox to avoid to many noises */
@@ -12,6 +12,9 @@ export default {
             datasetid: "commerces-alimentaires-locaux-covid-19@cudunkerque",
             domainid: "data"
         }
+    },
+    store: {
+        unique_ids: ['nom_de_la_societe', 'adresse_du_point_de_vente']
     },
     pictos: {
         "default": // mandatory, keep a default icon
@@ -156,6 +159,5 @@ export default {
                     "#364852"
             }
     }
-}
-;
+};
 

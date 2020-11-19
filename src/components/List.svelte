@@ -1,3 +1,10 @@
+<div>
+    <ul id="markers">
+        <slot></slot>
+    </ul>
+</div>
+
+
 <style lang="scss">
     div {
         position: absolute;
@@ -13,14 +20,9 @@
     }
 
     ul {
+        position: relative;
         list-style: none;
         margin: 0;
         padding: 0;
     }
 </style>
-
-<div>
-    <ul id="markers">
-        <slot></slot>
-    </ul>
-</div>
