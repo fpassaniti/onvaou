@@ -4,7 +4,7 @@
           href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css'
           type='text/css'/>
 
-    <link rel="stylesheet" href="/static/fonts/style.css"/>
+    <link rel="stylesheet" href="static/fonts/style.css"/>
 </svelte:head>
 
 <script>
@@ -94,7 +94,7 @@
             }, []);
             symbols.forEach(function (symbol) {
                 var layerID = 'poi-' + symbol;
-                map.loadImage('/static/img/' + symbol + '.png', (error, image) => {
+                map.loadImage('static/img/' + symbol + '.png', (error, image) => {
                     if (error) throw error;
                     map.addImage(symbol, image);
                     map.addLayer({
@@ -138,7 +138,7 @@
                     div.classList.add('is-flex', 'is-align-items-center', 'poi');
 
                     var img = document.createElement('img');
-                    img.src = '/static/img/' + config.pictos[item.properties.type_de_commerce].name + '.png';
+                    img.src = 'static/img/' + config.pictos[item.properties.type_de_commerce].name + '.png';
                     div.appendChild(img);
 
                     var label = document.createElement('p');

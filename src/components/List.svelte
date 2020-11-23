@@ -19,7 +19,7 @@
                    placeholder="Type ou non de magasin"
                    on:change={search} bind:value={value}/>
             <span class="icon is-small is-right">
-              <img src="/static/img/search.svg" />
+              <img src="static/img/search.svg" />
             </span>
         </p>
     </div>

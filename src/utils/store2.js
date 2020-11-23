@@ -8,7 +8,7 @@ function createStore() {
     const {subscribe, set, update} = writable({});
 
     const fetchData = async (whereQuery = '') => {
-        var url = getBaseUrl('data')('commerces-alimentaires-locaux-covid-19@cudunkerque');
+        var url = getBaseUrl(config.data.domainid)(config.data.datasetid);
         url = getGeoJsonExportUrl(url);
         url = addWhereQuery(url)(whereQuery);
         url = addRowsQuery(url)(-1);

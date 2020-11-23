@@ -1,4 +1,8 @@
 export default {
+    data: {
+        datasetid: "commerces-alimentaires-locaux-covid-19",
+        domainid: "fpassaniti"
+    },
     mapbox: {
         apikey: "pk.eyJ1IjoiZnBhc3Nhbml0aSIsImEiOiIxNTg3MGRlZWQyNjVkZjExMGVlNWVjNDFjOWQyNzNiMiJ9.pYKDlO4v-SNiDz08G9ZZoQ",
         init: { /* default map location (center of the map, and zoom level) */
@@ -9,10 +13,6 @@ export default {
         geocoder: { /* Narrow search results to the defined boundingbox to avoid to many noises */
             searchbbox: [2.108065, 50.896051, 2.608629, 51.132778]
         },
-        data: {
-            datasetid: "commerces-alimentaires-locaux-covid-19@cudunkerque",
-            domainid: "data"
-        }
     },
     store: {
         unique_ids: ['nom_de_la_societe', 'adresse_du_point_de_vente']
@@ -22,7 +22,7 @@ export default {
             {
                 "name": "default",
                 "url":
-                    "/static/img/pin.svg",
+                    "static/img/pin.svg",
                 "fontclass":
                     "",
                 "color":
@@ -32,7 +32,7 @@ export default {
             {
                 "name": "traiteur",
                 "url":
-                    "/static/img/traiteur.svg",
+                    "static/img/traiteur.svg",
                 "fontclass":
                     "icon-traiteur",
                 "color":
@@ -43,7 +43,7 @@ export default {
             {
                 "name": "primeur",
                 "url":
-                    "/static/img/primeur.svg",
+                    "static/img/primeur.svg",
                 "fontclass":
                     "icon-primeur",
                 "color":
@@ -54,7 +54,7 @@ export default {
             {
                 "name": "poissonnerie",
                 "url":
-                    "/static/img/poissonnerie.svg",
+                    "static/img/poissonnerie.svg",
                 "fontclass":
                     "icon-poissonnerie",
                 "color":
@@ -65,7 +65,7 @@ export default {
             {
                 "name": "truck",
                 "url":
-                    "/static/img/truck.svg",
+                    "static/img/truck.svg",
                 "fontclass":
                     "icon-truck",
                 "color":
@@ -76,7 +76,7 @@ export default {
             {
                 "name": "boucherie_charcuterie",
                 "url":
-                    "/static/img/boucherie_charcuterie.svg",
+                    "static/img/boucherie_charcuterie.svg",
                 "fontclass":
                     "icon-boucherie_charcuterie",
                 "color":
@@ -87,7 +87,7 @@ export default {
             {
                 "name": "fromagerie",
                 "url":
-                    "/static/img/fromagerie.svg",
+                    "static/img/fromagerie.svg",
                 "fontclass":
                     "icon-fromagerie",
                 "color":
@@ -98,7 +98,7 @@ export default {
             {
                 "name": "vin",
                 "url":
-                    "/static/img/vin.svg",
+                    "static/img/vin.svg",
                 "fontclass":
                     "icon-vin",
                 "color":
@@ -109,7 +109,7 @@ export default {
             {
                 "name": "boulangerie_patisserie",
                 "url":
-                    "/static/img/boulangerie_patisserie.svg",
+                    "static/img/boulangerie_patisserie.svg",
                 "fontclass":
                     "icon-boulangerie_patisserie",
                 "color":
@@ -120,7 +120,7 @@ export default {
             {
                 "name": "truck",
                 "url":
-                    "/static/img/truck.svg",
+                    "static/img/truck.svg",
                 "fontclass":
                     "icon-truck",
                 "color":
@@ -131,7 +131,7 @@ export default {
             {
                 "name": "epicerie",
                 "url":
-                    "/static/img/epicerie.svg",
+                    "static/img/epicerie.svg",
                 "fontclass":
                     "icon-epicerie",
                 "color":
@@ -142,7 +142,7 @@ export default {
             {
                 "name": "alimentation_generale",
                 "url":
-                    "/static/img/alimentation_generale.svg",
+                    "static/img/alimentation_generale.svg",
                 "fontclass":
                     "icon-alimentation_generale",
                 "color":
@@ -153,7 +153,7 @@ export default {
             {
                 "name": "supermarche",
                 "url":
-                    "/static/img/supermarche.svg",
+                    "static/img/supermarche.svg",
                 "fontclass":
                     "icon-supermarche",
                 "color":

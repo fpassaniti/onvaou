@@ -1,6 +1,7 @@
 export const getBaseUrl = (baseDomain) => (datasetId) => {
-  const urlString = `https://${baseDomain}.opendatasoft.com/api/v2/catalog/datasets/${datasetId}`
-  return new URL(urlString)
+  const url = (baseDomain?`https://${baseDomain}.opendatasoft.com`:window.location.origin);
+  const uri = `/api/v2/catalog/datasets/${datasetId}`;
+  return new URL(url + uri)
 };
 
 export const getRecordsUrl = (base) => {

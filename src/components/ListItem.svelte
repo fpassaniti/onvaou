@@ -62,7 +62,7 @@
             <div class="media">
                 <div class="media-left">
                     <figure class="image is-32x32">
-                        <img alt="poi type icon" src="{'/static/img/' + (config.pictos[feature.properties.type_de_commerce] || config.pictos['default']).name + '.png'}"/>
+                        <img alt="poi type icon" src="{'static/img/' + (config.pictos[feature.properties.type_de_commerce] || config.pictos['default']).name + '.png'}"/>
                     </figure>
                 </div>
                 <div class="media-content">
@@ -96,7 +96,7 @@
                 <div class="media">
                     <div class="media-left">
                         <figure class="image is-48x48">
-                            <img alt="poi type icon" src="{'/static/img/' + (config.pictos[feature.properties.type_de_commerce] || config.pictos['default']).name + '.png'}"/>
+                            <img alt="poi type icon" src="{'static/img/' + (config.pictos[feature.properties.type_de_commerce] || config.pictos['default']).name + '.png'}"/>
                         </figure>
                     </div>
                     <div class="media-content">
