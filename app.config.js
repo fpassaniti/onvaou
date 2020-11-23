@@ -11,7 +11,8 @@ export default {
         },
         style: "mapbox://styles/mapbox/light-v10",
         geocoder: { /* Narrow search results to the defined boundingbox to avoid to many noises */
-            searchbbox: [2.108065, 50.896051, 2.608629, 51.132778]
+            searchbbox: [2.108065, 50.896051, 2.608629, 51.132778],
+            placeholder: "Chercher une adresse"
         },
     },
     store: {

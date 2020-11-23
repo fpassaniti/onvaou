@@ -14,15 +14,15 @@
     <GeolocateControl></GeolocateControl>
     <Geocoder></Geocoder>
     <!--<MapStyleSelect></MapStyleSelect>-->
-    {#if $sortedGeojson.features !== []}
-        <List>
-            {#each $sortedGeojson.features as feature}
-                <ListItem {feature}/>
-            {/each}
-        </List>
-    {/if}
 </Map>
 
+{#if $sortedGeojson.features && Array.isArray($sortedGeojson.features) }
+    <List>
+        {#each $sortedGeojson.features as feature}
+            <ListItem {feature}/>
+        {/each}
+    </List>
+{/if}
 
 
 <style global lang="scss">

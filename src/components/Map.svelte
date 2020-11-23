@@ -13,7 +13,7 @@
 
     import {geojson} from '../utils/store2'
     import {mapPosition, listPosition, bounds} from '../utils/position'
-
+    import { media } from '../utils/mediaQueries';
     import config from '../../app.config'
     import {createDonutChart, createClusterProperties} from "../utils/mapHelpers";
 
@@ -33,16 +33,19 @@
     $: map && map.getSource('data') && map.getSource('data').setData($geojson) && updateMarkers() && console.log('REACTIVE map setData (source updated) !');
     $: map /*&& $bounds.getNorthEast()*/ && map.fitBounds($bounds, {
         padding: {
-            bottom: 100,
-            top: 100,
-            left: 350,
-            right: 80
+            bottom: $media.tablet?200:100,
+            top: $media.tablet?0:100,
+            left: $media.tablet?0:350,
+            right: $media.tablet?0:80
         }
     }) && console.log('REACTIVE map fitBounds !');
     $: map && $mapPosition && map.flyTo({
         center: $mapPosition,
         zoom: 18,
-        padding: {left: 390}
+        padding: {
+            bottom: $media.tablet?200:0,
+            left: $media.tablet?0:390
+        }
     }) && updateMarkers() && console.log('REACTIVE map flyTo'); // TODO : global variable for left nav
 
     var layers = [];

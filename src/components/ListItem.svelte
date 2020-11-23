@@ -131,8 +131,8 @@
                     </dl>
                 </div>
             </div>
+            <button class="modal-close is-large" aria-label="close" on:click={closeModal}></button>
         </div>
-        <button class="modal-close is-large" aria-label="close" on:click={closeModal}></button>
     </div>
 
 </li>
