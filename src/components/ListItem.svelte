@@ -71,7 +71,7 @@
                 </div>
             </div>
         </div>
-        <footer class="level mt-2">
+        <footer class="level is-mobile mt-2">
             <div class="level-left">
                 {#if feature.properties.geolocate_distance}
                     <p class="is-size-5 has-text-danger is-clipped">
@@ -127,6 +127,13 @@
                             {#if !feature.properties.ilivraison}
                                 Non renseigné
                             {/if}
+                        </dd>
+                        <dt>Lancer l'itinéraire sur Google Map</dt>
+                        <dd>
+                            <a target="_blank"
+                               href="https://www.google.fr/maps/dir//{feature.properties.adresse_du_point_de_vente}">
+                                {feature.properties.adresse_du_point_de_vente}
+                            </a>
                         </dd>
                     </dl>
                 </div>

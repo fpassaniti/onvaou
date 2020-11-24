@@ -1,19 +1,31 @@
 <script>
     import {geojson} from '../utils/store2'
-    import {mapPosition} from '../utils/position'
+    import {listPosition, mapPosition} from '../utils/position'
+    import {onMount} from "svelte";
 
-    let value;
-    let scroller;
+    let list
+    let value
+    let open = false
 
-    $: $mapPosition && scroller.scrollIntoView({behavior: 'smooth'});
+    //$: $mapPosition && scroller.scrollIntoView({behavior: 'smooth'});
+    $: $mapPosition && (open = false);
+    $: $listPosition && (open = true);
 
     async function search() {
         await geojson.updateWhereQuery(value ? '"' + value + '"' : undefined);
     }
+
+    onMount(() => {
+        list.addEventListener('click', (e) => {
+            if (e.target == list) {
+                open = !open;
+            }
+        })
+    })
+
 </script>
 
-<div id="list">
-    <div id="top-scroller" bind:this={scroller}></div>
+<div id="list" class:open={open} bind:this={list}>
     <div class="search-box">
         <h3 class="subtitle mb-2">
             Affiner la recherche
@@ -41,12 +53,17 @@
     #list {
         position: relative;
         width: 100vw;
-        height: 80vh;
-        top: 60vh;
+        height: 65vh;
+        top: 100vh;
         z-index: 100;
         display: flex;
         flex-direction: column;
         background-color: $body-background-color;
+        transition: ease 0.3s all;
+
+        :global(&.open) {
+            top: 35vh;
+        }
     }
 
     @media screen and (min-width: $tablet) {
@@ -61,24 +78,29 @@
     }
 
     @media screen and (max-width: $tablet) {
-        #top-scroller {
-            position: absolute;
-            top: -60vh;
-        }
         #list {
             &:before {
                 content: '';
                 position: absolute;
-                left: calc(50% - 32px / 2);
-                top: 3px;
+                left: calc(50% - 70px / 2);
+                top: -28px;
+                border-radius: $radius $radius 0 0;
+                border-top: 2px solid $light-400;
                 background-color: white;
-                height: 13px;
-                width: 28px;
-                opacity: 0.8;
-                background: url('/static/img/drag.png') no-repeat;
+                height: 28px;
+                width: 50px;
+                margin: 3px 10px;
+                background-repeat: no-repeat;
                 background-position: center;
                 background-size: cover;
+                /* chevron-up, closed state */
+                background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJmZWF0aGVyIGZlYXRoZXItY2hldnJvbi11cCI+PHBvbHlsaW5lIHBvaW50cz0iMTggMTUgMTIgOSA2IDE1Ij48L3BvbHlsaW5lPjwvc3ZnPg==);
             }
+            /* chevron-down open state */
+            :global(&.open:before) {
+                background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJmZWF0aGVyIGZlYXRoZXItY2hldnJvbi1kb3duIj48cG9seWxpbmUgcG9pbnRzPSI2IDkgMTIgMTUgMTggOSI+PC9wb2x5bGluZT48L3N2Zz4=);
+            }
+
         }
     }
 
