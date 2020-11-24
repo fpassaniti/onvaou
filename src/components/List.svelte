@@ -87,6 +87,10 @@
     }
 
     @media screen and (max-width: $tablet) {
+        :global(body) {
+            overflow: hidden; // prevent scroll
+        }
+
         #list {
             &:before {
                 content: '';
