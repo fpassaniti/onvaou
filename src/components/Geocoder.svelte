@@ -4,7 +4,6 @@
           type='text/css'/>
 </svelte:head>
 
-
 <script>
     import {getContext} from 'svelte';
     import config from '../../app.config'
@@ -24,7 +23,9 @@
         bbox: config.mapbox.geocoder.searchbbox,
         placeholder: config.mapbox.geocoder.placeholder
     });
-    console.log(geocoder);
+
+
+
     map.addControl(geocoder, 'top-right');
 </script>
 

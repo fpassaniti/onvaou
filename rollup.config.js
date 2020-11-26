@@ -6,8 +6,7 @@ import {terser} from 'rollup-plugin-terser';
 import preprocess from 'svelte-preprocess';
 import postcss from 'rollup-plugin-postcss';
 import nodePolyfills from 'rollup-plugin-node-polyfills';
-
-import yaml from 'rollup-plugin-yaml';
+import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -36,9 +35,7 @@ export default {
         file: 'public/build/bundle.js'
     },
     plugins: [
-        yaml({
-            include: 'app-config.yaml'
-        }),
+        json(),
         commonjs(),
         nodePolyfills(),
         svelte({
