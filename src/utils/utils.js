@@ -29,3 +29,16 @@ export function setLayerSource (map, layerId, source, sourceLayer) {
     map.removeLayer(layerId);
     map.addLayer(layerDef, before);
 }
+
+export function createEmptyGeojson() {
+    const empty = {
+        "type": "Feature",
+        "properties": {
+        },
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": []
+        }
+    };
+    return empty;
+}

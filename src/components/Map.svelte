@@ -20,6 +20,7 @@
 
     let container;
     let map;
+    let loaded;
     let button;
     var popup;
 
@@ -35,9 +36,15 @@
             zoom: config.mapbox.init.zoom
         });
 
+        map.on('load', () => {
+            loaded = true;
+        })
+
         map.on('click', (e) => {
             //var sources = map.queryRenderedFeatures(e.point, {'layers':Object.keys($circles)});
-            console.log(map.queryRenderedFeatures(e.point, {'layers':Object.keys($circles)}))
+            if (map.getLayer('circle-fill')){
+                console.log(map.queryRenderedFeatures(e.point, {'layers':['circle-fill','circle-outline']}))
+            }
             const el = document.createElement('div');
             const button = document.createElement('button');
             button.innerText = "Ajouter";
@@ -81,7 +88,7 @@
 <button id="log" bind:this={button}>Log circles union !</button>
 
 <div id="this-is-not-a-map" bind:this={container}>
-    {#if map}
+    {#if loaded}
         <slot></slot>
     {/if}
 </div>
