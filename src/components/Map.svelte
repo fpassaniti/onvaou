@@ -10,9 +10,10 @@
 <script>
     import {onMount, setContext} from 'svelte';
     import mapbox from 'mapbox-gl';
-    import {store} from '../utils/store';
+    import {circles} from '../utils/circles';
     import config from '../../app.config'
     import turf from '@turf/turf'
+    import turfintersect from '@turf/intersect'
     import turfunion from '@turf/union'
 
     mapbox.accessToken = config.mapbox.apikey;
@@ -20,6 +21,7 @@
     let container;
     let map;
     let button;
+    var popup;
 
     setContext('map', {
         getMap: () => map
@@ -34,33 +36,43 @@
         });
 
         map.on('click', (e) => {
+            //var sources = map.queryRenderedFeatures(e.point, {'layers':Object.keys($circles)});
+            console.log(map.queryRenderedFeatures(e.point, {'layers':Object.keys($circles)}))
             const el = document.createElement('div');
             const button = document.createElement('button');
             button.innerText = "Ajouter";
             button.addEventListener('click', () => {
                 const coords = e.lngLat;
-                store.add({center: [parseFloat(coords.lat), parseFloat(coords.lng)], radius: 20000});
+                circles.add({center: [parseFloat(coords.lng), parseFloat(coords.lat)], radius: 20000});
+                popup.remove();
             });
             el.appendChild(button);
-            new mapbox.Popup()
+            popup = new mapbox.Popup()
                     .setDOMContent(el)
                     .setLngLat(e.lngLat)
                     .addTo(map);
         });
 
         button.addEventListener('click', (e) => {
-            const polygons = [];
+            var prev, current;
             const sources = map.style.sourceCaches;
+            console.log(Object.keys(sources));
             Object.keys(sources).forEach((key) => {
-                if (key.startsWith('circle-source')) {
+                if (key.startsWith('circle-')) {
                     const features = map.querySourceFeatures(key);
+                    var polygons = [];
                     features.forEach((feature) => {
                         polygons.push(turf.polygon(feature.geometry.coordinates, {"fill": "#0f0"}));
-                    })
+                    });
+                    current = turf.union(...polygons);
+                    console.log(JSON.stringify(current));
+                    if (prev == undefined) {
+                        prev = current;
+                    }
+                    prev = turf.intersect(prev, current);
                 }
             })
-            const test = turf.union(...polygons);
-            console.log(JSON.stringify(test));
+            console.log(JSON.stringify(prev));
         })
     })
 
