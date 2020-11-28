@@ -10,13 +10,13 @@
             e.preventDefault;
             e.target.blur();
         }
-    }
+    };
     const focus = (e) => {
         var ft = setTimeout(() => {
             document.execCommand('selectAll', false, null)
             clearTimeout(ft);
         }, 150)
-    }
+    };
 
     onMount(() => {
         list.addEventListener('click', (e) => {
@@ -32,6 +32,10 @@
             document.documentElement.style.setProperty('--vh', `${vh}px`);
         });
     })
+
+    const updateNameProperty = (e) => {
+        circles.updateCircleName(e.target.dataset['fillid'], e.target.innerText)
+    }
 </script>
 
 <div id="list" class="px-3 py-2"
@@ -42,10 +46,12 @@
 
     <h3 class="title is-size-4 mt-5">Liste des cercles:</h3>
     {#each Object.values($circles) as circle}
-        <p contenteditable="true"
+        <p data-fillid="{circle.properties['fillId']}"
+           contenteditable="true"
            tabindex="1"
            class="input mb-2"
            on:focus={focus}
+           on:blur={updateNameProperty}
            on:keypress={pressed}
            bind:textContent={circle.properties['name']}>
             {circle.properties['name']}
@@ -53,7 +59,7 @@
         </p>
     {/each}
     {#if Object.keys($circles).length == 0}
-    <p>Cliquez sur la carte pour dessiner votre première zone de 20 km!</p>
+        <p>Cliquez sur la carte pour dessiner votre première zone de 20 km!</p>
     {/if}
 </div>
 

@@ -7,6 +7,7 @@
     import {intersection} from "./utils/intersection"
     import MapSource from "./components/MapSource.svelte";
     import MapLayer from "./components/MapLayer.svelte";
+    import LocationSync from "./components/LocationSync.svelte";
 
     const circlesFill = {
         "fill-color": "lightblue",
@@ -28,7 +29,11 @@
         "line-width": 2,
         "line-offset": 1
     };
+
+    circles.init();
 </script>
+
+<LocationSync></LocationSync>
 
 <Nav></Nav>
 <Map>
