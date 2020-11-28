@@ -1,4 +1,5 @@
 <script>
+    import Nav from "./components/Nav.svelte";
     import Map from "./components/Map.svelte";
     import GeolocateControl from "./components/GeolocateControl.svelte";
     import Geocoder from "./components/Geocoder.svelte";
@@ -29,31 +30,26 @@
     };
 </script>
 
-<Map>
-    <GeolocateControl></GeolocateControl>
-    <Geocoder></Geocoder>
-    <MapSource id="circle" data={Object.values($circles)}>
-        <MapLayer fill={circlesFill} outline={circlesOutline}></MapLayer>
-    </MapSource>
-    {#if $intersection !== null}
-        <MapSource id="intersection" data={$intersection}>
-            <MapLayer fill={intersectFill} outine={intersectOutline}></MapLayer>
-        </MapSource>
-    {/if}
+<div class="columns">
+    <Nav>
 
-        <!--{#if $intersec}
-        <Intersect geojson={$intersec}></Intersect>
-    {/if}-->
-</Map>
+    </Nav>
+    <Map>
+        <GeolocateControl></GeolocateControl>
+        <Geocoder></Geocoder>
+        {#if Object.keys($circles).length > 0}
+            <MapSource id="circle" data={Object.values($circles)}>
+                <MapLayer fill={circlesFill} outline={circlesOutline}></MapLayer>
+            </MapSource>
+        {/if}
+        {#if $intersection !== null}
+            <MapSource id="intersection" data={$intersection}>
+                <MapLayer fill={intersectFill} outine={intersectOutline}></MapLayer>
+            </MapSource>
+        {/if}
+    </Map>
+</div>
 
-<style lang="scss">
-    div {
-        position: absolute;
-        z-index: 1;
-        top: 5px;
-        left: 10px;
-        background-color: white;
-        display: block;
-        padding: 10px 20px;
-    }
+<style lang="scss" global>
+    @import "style/main";
 </style>

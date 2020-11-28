@@ -24,6 +24,10 @@ function createStore() {
 
             console.log("New circle in the store:" + circle.properties['fillId']);
             return obj;
+        }),
+        remove: (fillId) => update(obj => {
+            delete obj[fillId];
+            return obj;
         })
     };
 }

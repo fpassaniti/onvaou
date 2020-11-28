@@ -41,19 +41,33 @@
         })
 
         map.on('click', (e) => {
-            //var sources = map.queryRenderedFeatures(e.point, {'layers':Object.keys($circles)});
-            if (map.getLayer('circle-fill')){
-                console.log(map.queryRenderedFeatures(e.point, {'layers':['circle-fill','circle-outline']}))
-            }
             const el = document.createElement('div');
+            el.classList.add('popup', 'px-4', 'py-2');
             const button = document.createElement('button');
-            button.innerText = "Ajouter";
+            button.innerText = "Ajouter un cercle ici";
+            button.classList.add('button', 'is-primary', 'is-outlined', 'mb-3');
             button.addEventListener('click', () => {
                 const coords = e.lngLat;
                 circles.add({center: [parseFloat(coords.lng), parseFloat(coords.lat)], radius: 20000});
                 popup.remove();
             });
             el.appendChild(button);
+
+            if (map.getLayer('circle-fill')) {
+                var features = map.queryRenderedFeatures(e.point, {'layers': ['circle-fill']});
+                features.forEach((feature) => {
+                    var circlebutton = document.createElement('button');
+                    circlebutton.innerText = "Supprimer " + feature.properties['name'];
+                    circlebutton.classList.add('button', 'is-danger', 'is-outlined', 'mb-1');
+                    circlebutton.addEventListener('click', () => {
+                        const id = feature.properties['fillId'];
+                        circles.remove(id);
+                        popup.remove();
+                    });
+                    el.appendChild(circlebutton);
+                });
+            }
+
             popup = new mapbox.Popup()
                     .setDOMContent(el)
                     .setLngLat(e.lngLat)
@@ -94,8 +108,6 @@
 </div>
 
 <style lang="scss" global>
-    @import "../style/bulma-custom";
-
     #log {
         position: absolute;
         right: 20px;
@@ -110,7 +122,7 @@
         right: 0;
         bottom: 0;
         height: 100vh;
-        width: 100vw;
+        width: 100%;
     }
 
     .mapboxgl-canvas {
@@ -128,33 +140,13 @@
         pointer-events: none;
     }
 
-    .mapboxgl-popup {
-        .poi {
-            * {
-                pointer-events: none; // let pointer click events on .poi and not the rest
-            }
-
-            img {
-                height: 26px;
-                width: 26px;
-            }
-
-            padding: $spacing-100/2 $spacing-100;
-
-            p {
-                margin-left: $spacing-100 / 2;
-                font-weight: 500;
-                font-size: $size-4;
-            }
-
-            &:hover {
-                background-color: $light-300;
-                cursor: pointer;
-            }
-        }
-    }
-
     .mapboxgl-popup-content {
         padding: 0 !important;
+    }
+
+    .popup .button {
+        width: 100%;
+        height: auto;
+        white-space: pre-wrap;
     }
 </style>

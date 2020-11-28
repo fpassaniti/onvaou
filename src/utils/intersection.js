@@ -43,6 +43,8 @@ export const intersection = derived(
             }
             console.log("Intersection returns " + prev)
             return prev;
+        } else {
+            return null;
         }
     }
 );
