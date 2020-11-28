@@ -2,6 +2,8 @@
     import {circles} from '../utils/circles';
     import {onMount} from "svelte";
 
+    let open = true;
+    let list;
 
     const pressed = (e) => {
         if (e.charCode === 13) {
@@ -17,6 +19,12 @@
     }
 
     onMount(() => {
+        list.addEventListener('click', (e) => {
+            if (e.target == list) {
+                open = !open;
+            }
+        });
+
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
         window.addEventListener('resize', () => {
@@ -26,7 +34,9 @@
     })
 </script>
 
-<div id="list" class="px-3 py-2">
+<div id="list" class="px-3 py-2"
+     class:open={open}
+     bind:this={list}>
     <h1 class="title has-text-centered">On va où</h1>
     <p class="has-text-centered">L'app qui vous aide à visualiser le rayon de 20km autour de votre dimicile.</p>
 

@@ -38,7 +38,7 @@
 
         map.on('load', () => {
             loaded = true;
-        })
+        });
 
         map.on('click', (e) => {
             const el = document.createElement('div');
@@ -73,33 +73,9 @@
                     .setLngLat(e.lngLat)
                     .addTo(map);
         });
-
-        button.addEventListener('click', (e) => {
-            var prev, current;
-            const sources = map.style.sourceCaches;
-            console.log(Object.keys(sources));
-            Object.keys(sources).forEach((key) => {
-                if (key.startsWith('circle-')) {
-                    const features = map.querySourceFeatures(key);
-                    var polygons = [];
-                    features.forEach((feature) => {
-                        polygons.push(turf.polygon(feature.geometry.coordinates, {"fill": "#0f0"}));
-                    });
-                    current = turf.union(...polygons);
-                    console.log(JSON.stringify(current));
-                    if (prev == undefined) {
-                        prev = current;
-                    }
-                    prev = turf.intersect(prev, current);
-                }
-            })
-            console.log(JSON.stringify(prev));
-        })
     })
 
 </script>
-
-<button id="log" bind:this={button}>Log circles union !</button>
 
 <div id="this-is-not-a-map" bind:this={container}>
     {#if loaded}
@@ -108,13 +84,6 @@
 </div>
 
 <style lang="scss" global>
-    #log {
-        position: absolute;
-        right: 20px;
-        bottom: 30px;
-        z-index: 1;
-    }
-
     #this-is-not-a-map {
         position: fixed;
         top: 0;

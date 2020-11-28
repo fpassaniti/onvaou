@@ -30,25 +30,21 @@
     };
 </script>
 
-<div class="columns">
-    <Nav>
-
-    </Nav>
-    <Map>
-        <GeolocateControl></GeolocateControl>
-        <Geocoder></Geocoder>
-        {#if Object.keys($circles).length > 0}
-            <MapSource id="circle" data={Object.values($circles)}>
-                <MapLayer fill={circlesFill} outline={circlesOutline}></MapLayer>
-            </MapSource>
-        {/if}
-        {#if $intersection !== null}
-            <MapSource id="intersection" data={$intersection}>
-                <MapLayer fill={intersectFill} outine={intersectOutline}></MapLayer>
-            </MapSource>
-        {/if}
-    </Map>
-</div>
+<Nav></Nav>
+<Map>
+    <GeolocateControl></GeolocateControl>
+    <Geocoder></Geocoder>
+    {#if Object.keys($circles).length > 0}
+        <MapSource id="circle" data={Object.values($circles)}>
+            <MapLayer fill={circlesFill} outline={circlesOutline}></MapLayer>
+        </MapSource>
+    {/if}
+    {#if $intersection !== null}
+        <MapSource id="intersection" data={$intersection}>
+            <MapLayer fill={intersectFill} outine={intersectOutline}></MapLayer>
+        </MapSource>
+    {/if}
+</Map>
 
 <style lang="scss" global>
     @import "style/main";

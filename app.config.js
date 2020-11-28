@@ -7,7 +7,7 @@ export default {
         },
         style: "mapbox://styles/mapbox/streets-v11",
         geocoder: { /* Narrow search results to the defined boundingbox to avoid to many noises */
-            searchbbox: [1.688735,48.634495,3.007094,49.076338],
+            searchbbox: [-11.296520,38.631891,16.323109,53.420991],
             placeholder: "Chercher une adresse"
         },
     }
