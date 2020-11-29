@@ -3,8 +3,6 @@
     <link rel='stylesheet'
           href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css'
           type='text/css'/>
-
-    <link rel="stylesheet" href="static/fonts/style.css"/>
 </svelte:head>
 
 <script>

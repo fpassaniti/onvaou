@@ -49,7 +49,7 @@
         <p data-fillid="{circle.properties['fillId']}"
            contenteditable="true"
            tabindex="1"
-           class="input mb-2"
+           class="editable input mb-2"
            on:focus={focus}
            on:blur={updateNameProperty}
            on:keypress={pressed}
@@ -125,6 +125,18 @@
                 background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJmZWF0aGVyIGZlYXRoZXItY2hldnJvbi1kb3duIj48cG9seWxpbmUgcG9pbnRzPSI2IDkgMTIgMTUgMTggOSI+PC9wb2x5bGluZT48L3N2Zz4=);
             }
 
+        }
+    }
+
+    .editable {
+        &:not(:focus):after {
+            content: "\f044";
+            font-family: "Font Awesome 5 Free";
+            right: 6px;
+            font-size: 1.2em;
+            color: $ods-text;
+            position: absolute;
+            pointer-events: none;
         }
     }
 </style>
