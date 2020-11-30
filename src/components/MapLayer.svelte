@@ -19,7 +19,6 @@
                 "source": source,
                 "paint": fill
             });
-            console.log('Layer ' + source + '-fill' + ' created');
         }
 
         if (outline) {
@@ -29,7 +28,6 @@
                 "source": source,
                 "paint": outline
             });
-            console.log('Layer ' + source + '-outline' + ' created');
         }
     });
 </script>

@@ -35,12 +35,10 @@ function createStore() {
             var matches = configRE.exec(uri);
             if (matches && matches[1]) {
                 var config = b64_to_utf8(matches[1]);
-                console.log(config);
                 config.split('|').forEach((circleParam) => {
                     if (circleParam) {
                         var matchesCircleParam = lnglatnameRE.exec(circleParam);
                         if (matchesCircleParam && matchesCircleParam[1] && matchesCircleParam[7]) {
-                            console.log(matchesCircleParam);
                             const lng = matchesCircleParam[1];
                             const lat = matchesCircleParam[7];
                             const rad = matchesCircleParam[10];
@@ -57,7 +55,6 @@ function createStore() {
             const circle = createTurfCircle(marker);
             obj[circle.properties['fillId']] = circle;
 
-            console.log("New circle in the store:" + circle.properties['fillId']);
             return obj;
         }),
         remove: (fillId) => update(obj => {

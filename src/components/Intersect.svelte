@@ -10,7 +10,6 @@
     const map = getMap();
 
     $: {
-        console.log("UPDATE Intersect : " + geojson.properties['id']);
         map.on('load', () => {
             if (map.getSource(geojson.properties['id'])) {
                 map.removeSource(geojson.properties['id']);
@@ -24,7 +23,6 @@
     }
 
     onMount(() => {
-        console.log("MOUNT Intersect : " + geojson.properties['id']);
         map.on('load', () => {
             map.addSource(geojson.properties['id'], {
                 'type': 'geojson',

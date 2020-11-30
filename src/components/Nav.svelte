@@ -62,7 +62,7 @@
             </div>
         {/each}
         {#if Object.keys($circles).length == 0}
-            <p>Cliquez sur la carte pour dessiner votre première zone de 20 km!</p>
+            <p>Cliquez sur la carte pour faire apparaître un premier rayon de 20 km.</p>
         {/if}
     </div>
     <div class="nav-footer p-3 is-italic">

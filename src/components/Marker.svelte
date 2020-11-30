@@ -9,8 +9,6 @@
     const map = getMap();
 
     onMount(() => {
-        console.log("MOUNT Marker : " + geojson.properties['id']);
-
         map.addLayer({
             "id": geojson.properties['fillId'],
             "type": "fill",
