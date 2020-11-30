@@ -1,9 +1,11 @@
 import {writable} from 'svelte/store';
 import turf from '@turf/turf'
-import {generateUUID, b64_to_utf8} from "./utils";
+import {b64_to_utf8} from "./utils";
 
 const configRE = /\?config=((?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?)/;
 const lnglatnameRE = /^\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?),[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),(\d+),(.*)$/;
+
+var counter = 1;
 
 function createStore() {
     const {subscribe, update} = writable({});
@@ -16,12 +18,13 @@ function createStore() {
                 units: 'meters'
             }
         );
+        const nieme = counter++;
         circle.properties['center'] = marker.center;
         circle.properties['radius'] = marker.radius;
-        circle.properties['id'] = "circle-" + generateUUID();
+        circle.properties['id'] = "circle-" + nieme;
         circle.properties['fillId'] = circle.properties['id'] + "-fill";
         circle.properties['outlineId'] = circle.properties['id'] + "-outline";
-        circle.properties['name'] = marker.name || ("Circle #" + circle.properties['id']);
+        circle.properties['name'] = marker.name || ("Cercle #" + nieme);
         return circle;
     }
 

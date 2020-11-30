@@ -2,8 +2,9 @@
     import {circles} from '../utils/circles';
     import {onMount} from "svelte";
 
-    let open = true;
-    let list;
+    export let open = false;
+    let closebtn;
+    let nav;
 
     const pressed = (e) => {
         if (e.charCode === 13) {
@@ -17,126 +18,129 @@
             clearTimeout(ft);
         }, 150)
     };
+    const setEditableAndFocus = (e) => {
+        e.target.contentEditable = true;
+        e.target.focus();
+        document.execCommand('selectAll', false, null)
+    }
 
     onMount(() => {
-        list.addEventListener('click', (e) => {
-            if (e.target == list) {
-                open = !open;
-            }
+        closebtn.addEventListener('click', (e) => {
+            open = false;
         });
-
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-        window.addEventListener('resize', () => {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        });
-    })
+    });
 
     const updateNameProperty = (e) => {
+        e.target.contentEditable = false;
         circles.updateCircleName(e.target.dataset['fillid'], e.target.innerText)
     }
 </script>
-
-<div id="list" class="px-3 py-2"
+<div class="nav-container open"
      class:open={open}
-     bind:this={list}>
-    <h1 class="title has-text-centered">On va où</h1>
-    <p class="has-text-centered">L'app qui vous aide à visualiser le rayon de 20km autour de votre dimicile.</p>
+     bind:this={nav}>
+    <div class="nav-header">
+        <h1 class="subtitle is-size-2 py-4 px-5 has-text-weight-light">
+            Vos cercles
+        </h1>
+        <i class="delete is-large" bind:this={closebtn}></i>
+    </div>
+    <div class="nav-content px-5">
+        <!--<h1 class="title has-text-centered">On va où</h1>
+        <p class="has-text-centered">L'app qui vous aide à visualiser le rayon de 20km autour de votre dimicile.</p>-->
 
-    <h3 class="title is-size-4 mt-5">Liste des cercles:</h3>
-    {#each Object.values($circles) as circle}
-        <p data-fillid="{circle.properties['fillId']}"
-           contenteditable="true"
-           tabindex="1"
-           class="editable input mb-2"
-           on:focus={focus}
-           on:blur={updateNameProperty}
-           on:keypress={pressed}
-           bind:textContent={circle.properties['name']}>
-            {circle.properties['name']}
-            <i class="edit"/>
+        {#each Object.values($circles) as circle}
+            <div class="contenteditable-container  mb-2">
+                &#8203;<p data-fillid="{circle.properties['fillId']}"
+                          tabindex="1"
+                          class="input"
+                          on:click={setEditableAndFocus}
+                          on:blur={updateNameProperty}
+                          on:keypress={pressed}>
+                {circle.properties['name']}
+                <i class="edit"/>
+            </p>&#8203;
+            </div>
+        {/each}
+        {#if Object.keys($circles).length == 0}
+            <p>Cliquez sur la carte pour dessiner votre première zone de 20 km!</p>
+        {/if}
+    </div>
+    <div class="nav-footer p-3 is-italic">
+        <p class="has-text-justified">Onvaou.app vous aide à mieux visualiser le cercle de confinement de 20km, et programmer des
+            balades et sorties vélos avec vos amis.</p>
+        <p class="has-text-weight-bold">Application gratuite,
+            <a href="https://github.com/fpassaniti/onvaou/" target="_blank">
+                open source</a>, développée par <a href="https://twitter.com/FpassX" target="_blank">
+                Frédéric Passaniti
+            </a>
         </p>
-    {/each}
-    {#if Object.keys($circles).length == 0}
-        <p>Cliquez sur la carte pour dessiner votre première zone de 20 km!</p>
-    {/if}
+    </div>
 </div>
 
 <style lang="scss">
     @import "../style/bulma-custom";
     @import "../../node_modules/bulma/sass/utilities/initial-variables";
 
-    #list {
-        position: relative;
-        width: 100vw;
-        height: 65vh;
-        top: 100vh;
-        top: calc(var(--vh, 1vh) * 100);
-        z-index: 100;
-        display: flex;
-        flex-direction: column;
-        background-color: $body-background-color;
-        transition: ease 0.3s all;
+    .nav-container {
+        height: 100%;
+        width: 320px;
+        position: absolute;
+        top: 0;
+        left: -320px;
+        background-color: white;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);
+        z-index: 6;
+        transition: .3s ease left;
 
-        :global(&.open) {
-            top: 35vh;
-            top: calc(var(--vh, 1vh) * 35);
+        &.open {
+            left: 0px;
         }
-    }
 
-    @media screen and (min-width: $tablet) {
-        #list {
+        > * {
+            width: 100%;
             position: absolute;
-            left: 30px;
-            top: 30px;
-            bottom: 30px;
-            height: calc(100vh - 60px);
-            width: 260px;
-        }
-    }
-
-    @media screen and (max-width: $tablet) {
-        :global(body) {
-            overflow: hidden; // prevent scroll
+            left: 0;
         }
 
-        #list {
-            &:before {
-                content: '';
+        .nav-header {
+            height: 80px;
+            top: 0;
+
+            i.delete {
                 position: absolute;
-                left: calc(50% - 70px / 2);
-                top: -28px;
-                border-radius: $radius $radius 0 0;
-                border-top: 2px solid $light-400;
-                background-color: white;
-                height: 28px;
-                width: 50px;
-                margin: 3px 10px;
-                background-repeat: no-repeat;
-                background-position: center;
-                background-size: cover;
-                /* chevron-up, closed state */
-                background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJmZWF0aGVyIGZlYXRoZXItY2hldnJvbi11cCI+PHBvbHlsaW5lIHBvaW50cz0iMTggMTUgMTIgOSA2IDE1Ij48L3BvbHlsaW5lPjwvc3ZnPg==);
+                right: 15px;
+                top: 15px;
             }
+        }
 
-            /* chevron-down open state */
-            :global(&.open:before) {
-                background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJmZWF0aGVyIGZlYXRoZXItY2hldnJvbi1kb3duIj48cG9seWxpbmUgcG9pbnRzPSI2IDkgMTIgMTUgMTggOSI+PC9wb2x5bGluZT48L3N2Zz4=);
+        .nav-content {
+            margin-top: 80px;
+            margin-bottom: 150px;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            overflow: auto;
+
+            .contenteditable-container {
+                cursor: text;
+
+                > *:not(:focus):after {
+                    content: "\f044";
+                    font-family: "Font Awesome 5 Free";
+                    right: 6px;
+                    font-size: 1.2em;
+                    color: $ods-text;
+                    position: absolute;
+                    pointer-events: none;
+                }
             }
+        }
 
+        .nav-footer {
+            height: 150px;
+            bottom: 0;
+            border-top: 1px solid #eee;
         }
     }
 
-    .editable {
-        &:not(:focus):after {
-            content: "\f044";
-            font-family: "Font Awesome 5 Free";
-            right: 6px;
-            font-size: 1.2em;
-            color: $ods-text;
-            position: absolute;
-            pointer-events: none;
-        }
-    }
 </style>

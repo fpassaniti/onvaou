@@ -26,7 +26,7 @@
 
 
 
-    map.addControl(geocoder, 'top-right');
+    map.addControl(geocoder, 'top-left');
 </script>
 
 <style lang="scss" global>
