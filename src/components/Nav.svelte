@@ -46,7 +46,7 @@
     </div>
     <div class="nav-content px-5">
         <!--<h1 class="title has-text-centered">On va où</h1>
-        <p class="has-text-centered">L'app qui vous aide à visualiser le rayon de 20km autour de votre dimicile.</p>-->
+        <p class="has-text-centered">L'app qui vous aide à visualiser le rayon de 10km autour de votre dimicile.</p>-->
 
         {#each Object.values($circles) as circle}
             <div class="contenteditable-container  mb-2">
@@ -62,11 +62,11 @@
             </div>
         {/each}
         {#if Object.keys($circles).length == 0}
-            <p>Cliquez sur la carte pour faire apparaître un premier rayon de 20 km.</p>
+            <p>Cliquez sur la carte pour faire apparaître un premier rayon de 10 km.</p>
         {/if}
     </div>
     <div class="nav-footer p-3 is-italic">
-        <p class="has-text-justified">Onvaou.app vous aide à mieux visualiser le cercle de confinement de 20km, et programmer des
+        <p class="has-text-justified">Onvaou.app vous aide à mieux visualiser le cercle de confinement de 10km, et programmer des
             balades et sorties vélos avec vos amis.</p>
         <p class="has-text-weight-bold">Application gratuite,
             <a href="https://github.com/fpassaniti/onvaou/" target="_blank">

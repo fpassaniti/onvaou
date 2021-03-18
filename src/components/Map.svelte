@@ -50,7 +50,7 @@
             button.classList.add('button', 'is-primary', 'is-outlined');
             button.addEventListener('click', () => {
                 const coords = e.lngLat;
-                circles.add({center: [parseFloat(coords.lng), parseFloat(coords.lat)], radius: 20000});
+                circles.add({center: [parseFloat(coords.lng), parseFloat(coords.lat)], radius: 10000});
                 const mapBounds = map.getBounds();
                 if (turf.distance(
                     [mapBounds.getNorthWest().lng,mapBounds.getNorthWest().lat],
